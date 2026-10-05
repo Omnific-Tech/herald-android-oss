@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Herald Template</string>
+
+    <!-- These three must match assets/herald.json. -->
+    <string name="start_url" translatable="false">https://template.example/</string>
+    <string name="origin_host" translatable="false">template.example</string>
+
+    <!--
+      Digital Asset Links. The origin must serve a matching
+      /.well-known/assetlinks.json naming this package and its signing
+      certificate fingerprint, or the TWA falls back to a Custom Tab with a URL
+      bar instead of running full screen.
+    -->
+    <string name="asset_statements" translatable="false">
+        [{
+          \"relation\": [\"delegate_permission/common.handle_all_urls\"],
+          \"target\": {
+            \"namespace\": \"web\",
+            \"site\": \"https://template.example\"
+          }
+        }]
+    </string>
+</resources>

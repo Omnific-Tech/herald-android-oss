@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Omnific-Tech/herald-android/schema/herald-config.schema.json",
+  "title": "Herald product configuration",
+  "description": "assets/herald.json in a product APK. Everything a product needs to differ from another product lives here.",
+  "type": "object",
+  "required": ["herald_url", "application", "origin", "start_url", "channels"],
+  "additionalProperties": false,
+  "properties": {
+    "herald_url": {
+      "type": "string",
+      "description": "Herald's base URL.",
+      "pattern": "^(https://|http://localhost)"
+    },
+    "application": {
+      "type": "string",
+      "description": "Application slug, as provisioned by heraldctl create-application.",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "origin": {
+      "type": "string",
+      "description": "Trusted origin. Notification links resolve against it and nothing else.",
+      "pattern": "^https://"
+    },
+    "start_url": {
+      "type": "string",
+      "description": "Opened when a notification carries no link, or carries one that is not on the origin.",
+      "pattern": "^https://"
+    },
+    "web_subscription_bridge": {
+      "type": "boolean",
+      "description": "Let the PWA read and replace subscriptions over verified TWA postMessage. Requires use_as_origin in assetlinks.json. Protocol in README.md. Defaults to false."
+    },
+    "channels": {
+      "type": "array",
+      "description": "Herald channels this product subscribes to, each becoming an Android notification channel of the same id.",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "name"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "minLength": 1, "maxLength": 64 },
+          "name": { "type": "string", "minLength": 1 },
+          "description": { "type": "string" },
+          "importance": { "enum": ["high", "default", "low"] }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "herald_url": "https://herald.example",
+  "application": "template",
+  "origin": "https://template.example",
+  "start_url": "https://template.example/",
+  "channels": [
+    {
+      "id": "alerts",
+      "name": "Alerts",
+      "description": "Time-critical notifications",
+      "importance": "high"
+    },
+    {
+      "id": "system",
+      "name": "System",
+      "description": "Service and account messages",
+      "importance": "default"
+    }
+  ]
+}
