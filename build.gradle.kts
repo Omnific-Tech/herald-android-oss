@@ -44,7 +44,7 @@ tasks.register("releaseBundle") {
         val status = providers.exec {
             commandLine("git", "status", "--porcelain")
         }.standardOutput.asText.get().trim()
-        require(status.isEmpty()) { "Commit source changes before creating release provenance" }
+        require(status.isEmpty()) { "Commit source changes before creating release provenance:\n$status" }
         val directory = layout.buildDirectory.dir("distributions").get().asFile
         val archive = directory.resolve("herald-core-$libraryVersion-maven.zip")
         val digest = java.security.MessageDigest.getInstance("SHA-256")
