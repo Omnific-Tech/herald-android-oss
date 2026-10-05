@@ -22,7 +22,7 @@ val validateProductDestination = tasks.register("validateProductDestination") {
 }
 
 tasks.register<Copy>("newProduct") {
-    dependsOn(validateProductDestination, ":core:libraryZip")
+    dependsOn(validateProductDestination, "releaseBundle")
     into(productDestination.map { file(it) })
     from("template") {
         exclude(".gradle/**", "**/build/**", "local.properties", "vendor/**")
@@ -32,14 +32,20 @@ tasks.register<Copy>("newProduct") {
             }
         }
     }
-    from(layout.buildDirectory.file("distributions/herald-core-$libraryVersion-maven.zip")) {
+    from(layout.buildDirectory.dir("distributions")) {
+        include("herald-core-$libraryVersion-maven.zip", "SHA256SUMS", "PROVENANCE.txt")
         into("vendor")
     }
+    from("LICENSE", "NOTICE")
 }
 
 tasks.register("releaseBundle") {
     dependsOn(":core:libraryZip")
     doLast {
+        val status = providers.exec {
+            commandLine("git", "status", "--porcelain")
+        }.standardOutput.asText.get().trim()
+        require(status.isEmpty()) { "Commit source changes before creating release provenance" }
         val directory = layout.buildDirectory.dir("distributions").get().asFile
         val archive = directory.resolve("herald-core-$libraryVersion-maven.zip")
         val digest = java.security.MessageDigest.getInstance("SHA-256")

@@ -6,8 +6,16 @@ plugins {
 
 tasks.register<Copy>("prepareHerald") {
     val version = providers.gradleProperty("herald.coreVersion").get()
-    from(zipTree(file("vendor/herald-core-$version-maven.zip")))
+    val archive = file("vendor/herald-core-$version-maven.zip")
+    from(zipTree(archive))
     into("vendor")
+    doFirst {
+        val expected = file("vendor/SHA256SUMS").readLines()
+            .single { it.endsWith("  ${archive.name}") }.substringBefore(' ')
+        val actual = java.security.MessageDigest.getInstance("SHA-256")
+            .digest(archive.readBytes()).joinToString("") { "%02x".format(it) }
+        require(actual == expected) { "Vendored core checksum mismatch" }
+    }
 }
 
 subprojects {
