@@ -36,7 +36,6 @@ tasks.register<Copy>("newProduct") {
         include("herald-core-$libraryVersion-maven.zip", "SHA256SUMS", "PROVENANCE.txt")
         into("vendor")
     }
-    from("LICENSE", "NOTICE")
 }
 
 tasks.register("releaseBundle") {
