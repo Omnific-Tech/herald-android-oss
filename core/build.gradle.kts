@@ -59,6 +59,12 @@ afterEvaluate {
         pom {
             name.set("Herald Android core")
             description.set("Notification client and Trusted Web Activity bridge")
+            licenses {
+                license {
+                    name.set("Apache License 2.0")
+                    url.set("https://www.apache.org/licenses/LICENSE-2.0")
+                }
+            }
         }
     }
 }
@@ -71,4 +77,10 @@ tasks.register<Zip>("libraryZip") {
     destinationDirectory.set(rootProject.layout.buildDirectory.dir("distributions"))
     isPreserveFileTimestamps = false
     isReproducibleFileOrder = true
+}
+
+tasks.withType<Jar>().configureEach {
+    if (name == "sourceReleaseJar") {
+        from(rootProject.file("LICENSE"), rootProject.file("NOTICE"))
+    }
 }
