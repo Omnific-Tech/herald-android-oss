@@ -5,10 +5,10 @@ plugins {
 }
 
 /**
- * A product target overrides these in its own gradle.properties rather than
+ * A product overrides these in its own gradle.properties rather than
  * editing this file.
  */
-val productApplicationId: String = providers.gradleProperty("herald.applicationId").getOrElse("dev.omnific.herald.template")
+val productApplicationId: String = providers.gradleProperty("herald.applicationId").getOrElse("com.example.product")
 val productVersionName: String = providers.gradleProperty("herald.versionName").getOrElse("0.1.0")
 val productVersionCode: Int = providers.gradleProperty("herald.versionCode").getOrElse("1").toInt()
 
@@ -39,5 +39,5 @@ android {
 }
 
 dependencies {
-    implementation(project(":core"))
+    implementation("dev.omnific.herald:herald-core:${providers.gradleProperty("herald.coreVersion").get()}")
 }

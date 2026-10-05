@@ -1,0 +1,62 @@
+name: library
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+    tags: ['core-v*']
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: 'platform-tools platforms;android-37.2 build-tools;37.0.0'
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Build library and standalone consumer
+        run: |
+          version=0.1.0
+          if [[ "$GITHUB_REF" == refs/tags/core-v* ]]; then version="${GITHUB_REF_NAME#core-v}"; fi
+          ./gradlew :core:lint releaseBundle newProduct -Pherald.coreVersion="$version" -Pproduct.dir="$RUNNER_TEMP/product"
+          "$RUNNER_TEMP/product/gradlew" -p "$RUNNER_TEMP/product" :app:assembleDebug :app:assembleRelease :app:lint
+      - uses: actions/upload-artifact@v4
+        with:
+          name: library
+          path: build/distributions/
+          retention-days: 7
+      - uses: actions/upload-artifact@v4
+        with:
+          name: consumer-apks
+          path: ${{ runner.temp }}/product/app/build/outputs/apk/
+          retention-days: 7
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/core-v')
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: library
+          path: release
+      - name: Publish immutable library release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          test -f "release/herald-core-${RELEASE_TAG#core-v}-maven.zip"
+          gh release create "$RELEASE_TAG" release/* --verify-tag --generate-notes
