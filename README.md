@@ -55,3 +55,6 @@ release APK. Packaging verification does not verify real transport delivery.
 Before rollout, verify notification permission, delivery, tap routing and bridge
 on an Android device. Existing app upgrades must preserve application ID,
 certificate, increasing versionCode and saved preferences.
+
+The [subscription bridge contract](docs/subscription-bridge.md) documents wire
+messages and Digital Asset Links for integrations that do not use Herald Web.

@@ -30,7 +30,7 @@
     },
     "web_subscription_bridge": {
       "type": "boolean",
-      "description": "Let the PWA read and replace subscriptions over verified TWA postMessage. Requires use_as_origin in assetlinks.json. Protocol in README.md. Defaults to false."
+      "description": "Let the PWA read and replace subscriptions over verified TWA postMessage. Requires use_as_origin in assetlinks.json. Protocol in docs/subscription-bridge.md. Defaults to false."
     },
     "channels": {
       "type": "array",
