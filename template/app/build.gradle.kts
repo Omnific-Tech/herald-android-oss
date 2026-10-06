@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.google.services)
+    alias(libs.plugins.oss.licenses)
 }
 
 /**
@@ -13,6 +14,7 @@ val productVersionName: String = providers.gradleProperty("herald.versionName").
 val productVersionCode: Int = providers.gradleProperty("herald.versionCode").getOrElse("1").toInt()
 
 android {
+    sourceSets.getByName("main").assets.directories.add(layout.buildDirectory.dir("generated/licenseAssets").get().asFile.path)
     namespace = "dev.omnific.herald.template"
     compileSdk = 37
     compileSdkMinor = 2
@@ -41,3 +43,5 @@ android {
 dependencies {
     implementation("dev.omnific.herald:herald-core:${providers.gradleProperty("herald.coreVersion").get()}")
 }
+
+apply(from = rootProject.file("licenses.gradle.kts"))
