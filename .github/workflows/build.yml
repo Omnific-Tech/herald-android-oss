@@ -28,7 +28,7 @@ jobs:
           version=0.1.0
           if [[ "$GITHUB_REF" == refs/tags/core-v* ]]; then version="${GITHUB_REF_NAME#core-v}"; fi
           ./gradlew :core:lint releaseBundle newProduct -Pherald.coreVersion="$version" -Pproduct.dir="$RUNNER_TEMP/product"
-          "$RUNNER_TEMP/product/gradlew" -p "$RUNNER_TEMP/product" :app:assembleDebug :app:assembleRelease :app:lint
+          "$RUNNER_TEMP/product/gradlew" -p "$RUNNER_TEMP/product" :app:assembleDebug :app:releaseNotices :app:lint
       - uses: actions/upload-artifact@v4
         with:
           name: library
@@ -38,6 +38,11 @@ jobs:
         with:
           name: consumer-apks
           path: ${{ runner.temp }}/product/app/build/outputs/apk/
+          retention-days: 7
+      - uses: actions/upload-artifact@v4
+        with:
+          name: consumer-notices
+          path: ${{ runner.temp }}/product/app/build/outputs/notices/
           retention-days: 7
 
   release:

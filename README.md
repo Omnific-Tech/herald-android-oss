@@ -58,3 +58,9 @@ certificate, increasing versionCode and saved preferences.
 
 The [subscription bridge contract](docs/subscription-bridge.md) documents wire
 messages and Digital Asset Links for integrations that do not use Herald Web.
+
+Generated apps retain dependency terms and embedded copyright notices in APKs.
+From the generated project, run `./gradlew :app:releaseNotices` to verify
+the minified APK and export its notice ZIP for distribution alongside the APK.
+See [dependency notices](template/third_party/README.md). CI verifies and retains
+both APKs and the notice ZIP.
