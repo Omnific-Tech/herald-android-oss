@@ -31,6 +31,7 @@ android {
 }
 
 dependencies {
+    testImplementation(libs.junit)
     api(libs.androidx.core.ktx)
     api(libs.androidx.browser)
     api(libs.android.browser.helper)
