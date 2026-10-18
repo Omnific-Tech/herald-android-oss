@@ -53,7 +53,7 @@ internal data class BridgeReply(
 }
 
 private const val MAX_ID_LENGTH = 64
-private const val MAX_SUBSCRIPTIONS = 250
+private const val MAX_SUBSCRIPTIONS = 500
 private const val MAX_TOPIC_LENGTH = 200
 
 // Topics are always written, so the page never has to infer an omitted one.

@@ -36,7 +36,7 @@ Enable `web_subscription_bridge` only with both `handle_all_urls` and
 
 `./gradlew releaseBundle` produces a local Maven ZIP, SHA256SUMS and source
 provenance under `build/distributions/`. Its coordinate is
-`dev.omnific.herald:herald-core:0.1.0`. The archive includes AAR, dependency
+`dev.omnific.herald:herald-core:0.1.1`. The archive includes AAR, dependency
 metadata and sources. Consumer shrinker rules and manifest entries ship in AAR.
 
 Generate an app using the released core version pinned by the template. For
@@ -58,6 +58,11 @@ certificate, increasing versionCode and saved preferences.
 
 The [subscription bridge contract](docs/subscription-bridge.md) documents wire
 messages and Digital Asset Links for integrations that do not use Herald Web.
+
+Core 0.1.1 accepts up to 500 subscriptions, including Aeon's 343 combined
+earthquake/haze/system subscriptions. Existing channel, ID, topic-length and
+duplicate validation is unchanged. Consumers must update their pinned core and
+ship an updated APK; changing the PWA cannot raise an older APK's bridge limit.
 
 Generated apps retain dependency terms and embedded copyright notices in APKs.
 From the generated project, run `./gradlew :app:releaseNotices` to verify

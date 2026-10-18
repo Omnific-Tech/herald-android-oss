@@ -25,10 +25,17 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
       - name: Build library and standalone consumer
         run: |
-          version=0.1.0
+          version=0.1.1
           if [[ "$GITHUB_REF" == refs/tags/core-v* ]]; then version="${GITHUB_REF_NAME#core-v}"; fi
-          ./gradlew :core:lint releaseBundle newProduct -Pherald.coreVersion="$version" -Pproduct.dir="$RUNNER_TEMP/product"
+          ./gradlew :core:testDebugUnitTest :core:lint releaseBundle newProduct -Pherald.coreVersion="$version" -Pproduct.dir="$RUNNER_TEMP/product"
           "$RUNNER_TEMP/product/gradlew" -p "$RUNNER_TEMP/product" :app:assembleDebug :app:releaseNotices :app:lint
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bridge-protocol-tests
+          path: |
+            core/build/test-results/testDebugUnitTest/
+            core/build/reports/tests/testDebugUnitTest/
       - uses: actions/upload-artifact@v4
         with:
           name: library

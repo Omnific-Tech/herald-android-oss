@@ -23,7 +23,7 @@ An explicit empty set means unsubscribe from everything. `notifications` is
 ```
 
 Set replaces the complete list and succeeds after the broker accepts it. At most
-100 unique entries may name configured channels; each topic is at most 200
+500 unique entries may name configured channels; each topic is at most 200
 characters. IDs must be 1–64 characters. A missing topic means an empty topic.
 Sets are processed in order. Failures return `ok:false` and `error` equal to
 `invalid_subscriptions`, `notifications_denied` or `herald_unavailable`.
